@@ -388,7 +388,7 @@
             <div class="total-bar">
                 <div class="tl">
                     <div class="tl-head">📦 योग – मासिक इंजेक्शन लोड</div>
-                    <div class="tl-sub">E + F | प्रति माह आवश्यक टीके</div>
+                    <div class="tl-sub" id="formula-total">E + F | प्रति माह आवश्यक टीके</div>
                 </div>
                 <div class="tv" id="val-total">–</div>
             </div>
@@ -427,12 +427,19 @@
             // E & F
             const E = C !== null ? C * 2 : null;
             const F = (D !== null && !isNaN(g)) ? D * g : null;
-            set('val-E', E !== null ? Math.round(E) : '–');
+            set('val-E', E !== null ? r1(E) : '–');
             set('formula-E', E !== null ? `C×2 = ${r1(E)} ≈ ${Math.round(E)}` : 'C×2');
-            set('val-F', F !== null ? Math.round(F) : '–');
+            set('val-F', F !== null ? r1(F) : '–');
             set('formula-F', F !== null ? `D×${gLabel} = ${r1(F)} ≈ ${Math.round(F)}` : `D×${gLabel}`);
 
-            set('val-total', (E !== null && F !== null) ? Math.round(E) + Math.round(F) : '–');
+            if (E !== null && F !== null) {
+                const rawTotal = E + F;
+                set('val-total', Math.round(rawTotal));
+                set('formula-total', `E+F = ${r1(E)}+${r1(F)} = ${r1(rawTotal)} ≈ ${Math.round(rawTotal)}`);
+            } else {
+                set('val-total', '–');
+                set('formula-total', 'E + F | प्रति माह आवश्यक टीके');
+            }
         }
 
         function resetAll() {
